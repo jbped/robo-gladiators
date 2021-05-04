@@ -20,7 +20,7 @@ var enemyAttack = 12;
 
 var fight = function(enemyName) {
     // repeat and execute until enemy robot is defeated
-    while(enemyHealth > 0) {
+    while(enemyHealth > 0 && playerHealth > 0) {
 
         // Intro Alert
         // window.alert('Welcome to the Robo-Gladiator Brawl!');
@@ -38,6 +38,7 @@ var fight = function(enemyName) {
             // Check Enemy Health
             if (enemyHealth <= 0) {
                 window.alert ('Ooooooh! ' + enemyName + ' was just annihilated by ' + playerName + '! ' + playerName + ' is victorious!');
+                break;
             }
             else {
                 window.alert('Wow! ' + playerName + ' just attacked ' + enemyName + ' for a whopping ' + playerAttack +' hit points! ' + enemyName + ' has ' + enemyHealth + ' hit points remaining.');
@@ -52,6 +53,7 @@ var fight = function(enemyName) {
             // Check Player Health
             if (playerHealth <= 0) {
                 window.alert ('Thats a huge hit by ' + enemyName + '! ' + playerName + ' is down for the count! Better luck next time. ' + enemyName + ' wins!')
+                break;
             }
             else {
                 window.alert(enemyName + ' just slammed ' + playerName + ' with an impressive ' + enemyAttack + ' hp hit! ' + playerName + ' is down to ' + playerHealth + ' hit points!');
@@ -66,7 +68,9 @@ var fight = function(enemyName) {
             //if yes (true), skip fight
             if (confirmSkip) {
                 window.alert('Oh, what do we have here? It appears that ' + playerName + ' has decided to skip the fight!');
-                playerMoney = playerMoney - 2;
+                playerMoney = playerMoney - 10;
+                console.log('playerMoney', playerMoney);
+                break;
             }
             else {
                 fight();
