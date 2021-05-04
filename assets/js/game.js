@@ -85,6 +85,13 @@ var fight = function(enemyName) {
 // Initiate Fight Call
 // fight();
 for(var i = 0; i < enemyNames.length; i++) {
+    if (playerHealth > 0) {
+        window.alert('Welcome to the Robo-Gladiator Brawl! Round ' + (i +1) + '- FIGHT!');
+    }
+    else {
+        window.alert('Your Robot has been pummelled! GAME OVER!');
+        break;
+    }
     var pickedEnemyName = enemyNames [i];
     enemyHealth = 50;
     fight(pickedEnemyName);
