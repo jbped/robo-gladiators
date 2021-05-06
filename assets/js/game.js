@@ -63,11 +63,11 @@ var fight = function(enemyName) {
         // IF player chooses to skip the battle.
         else if (promptFight ==='skip' || promptFight === 'SKIP') {
             //confirm that the player wants to skip
-            var confirmSkip = window.confirm('Are you sure that you\'d like to quit?')
+            var confirmSkip = window.confirm('Are you sure that you\'d like to skip this fight with ' +  enemyName + '?')
             
             //if yes (true), skip fight
             if (confirmSkip) {
-                window.alert('Oh, what do we have here? It appears that ' + playerName + ' has decided to skip the fight!');
+                window.alert('It appears that ' + playerName + ' has decided to skip the fight against ' + enemyName + '!');
                 playerMoney = playerMoney - 10;
                 console.log('playerMoney', playerMoney);
                 break;
@@ -82,18 +82,56 @@ var fight = function(enemyName) {
     }
 };
     
-// Initiate Fight Call
-// fight();
-for(var i = 0; i < enemyNames.length; i++) {
+// Function to begin playing the game
+var startGame = function () {
+    // Reset Character Values at the Beginning of each new game
+    playerHealth = 100;
+    playerAttack = 10;
+    playerMoney = 10; 
+
+    // Round Counter and Enemy Changer Loop
+    for(var i = 0; i < enemyNames.length; i++) {
+        if (playerHealth > 0) {
+            window.alert('Welcome to the Robo-Gladiator Brawl! Round ' + (i +1) + '- FIGHT!');
+            var pickedEnemyName = enemyNames [i];
+            // Reset Enemy Health to 50 at the beginning of each new round.
+            enemyHealth = 50;
+            // Rotates enemyName to newly picked name
+            fight(pickedEnemyName);
+        }
+        // Game Over Terminate Game Loop
+        else {
+            window.alert('Your Robot has been pummelled! GAME OVER!');
+            break;
+        }
+    }
+
+    // At end of loop, player is either out of health or enemies to fight
+    endGame();
+};
+
+// End Game Function
+var endGame = function () {
+    // Verify player health to give end of game results
     if (playerHealth > 0) {
-        window.alert('Welcome to the Robo-Gladiator Brawl! Round ' + (i +1) + '- FIGHT!');
+        window.alert('Boom baby! Well done! ' + playerName + ' annihilated the competition! You have a score of ' + playerMoney + '.' )
     }
     else {
-        window.alert('Your Robot has been pummelled! GAME OVER!');
-        break;
+        window.alert('Bummer! ' + playerName + ' was defeated. Better luck next time!')
     }
-    var pickedEnemyName = enemyNames [i];
-    enemyHealth = 50;
-    fight(pickedEnemyName);
-}
+    
+    // Ask player if they want to play the game again
+    var playAgainConfirm = window.confirm('Would you like to play again?')
+    
+    if (playAgainConfirm) {
+        // Restart the Game
+        startGame();
+    }
+    else {
+        window.alert('Thank you for playing Robo-Gladiator Brawl! Come back anytime!')
+    }
+};
+
+startGame ();
+
 
