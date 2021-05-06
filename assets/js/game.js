@@ -1,8 +1,10 @@
-// Game States
-// "WIN" - Player robot has defeated all enemy-robots
-//    * Fight all enemy-robots
-//    * Defeat each enemy-robot
-// "LOSE" - Player robot's health is zero or less
+
+// Random Number Generator
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+  
+    return value;
+  };
 
 //character creation
 var playerName = window.prompt('What is your Robo-Gladiator\'s name?');
@@ -21,6 +23,8 @@ var enemyAttack = 12;
 var fight = function (enemyName) {
     // repeat and execute until enemy robot is defeated
     while (enemyHealth > 0 && playerHealth > 0) {
+        console.log('enemyHealth',enemyHealth, 'enemyAttack', enemyAttack);
+        console.log('playerHealth',playerHealth, 'playerAttack',playerAttack,'playerMoney',playerMoney);
 
         // Intro Alert
         // window.alert('Welcome to the Robo-Gladiator Brawl!');
@@ -29,11 +33,13 @@ var fight = function (enemyName) {
 
         // IF player chooses to fight
         if (promptFight === 'fight' || promptFight === 'FIGHT') {
-            //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
-            enemyHealth = enemyHealth - playerAttack;
+            //Player Atk Dmg Randomizer
+            var damage = randomNumber(playerAttack - 3, playerAttack);
+            //Determine enemyHealth by selecting max of zero or enemyHealth-playerAttack which ever is greater
+            enemyHealth = Math.max(0,enemyHealth-damage);
 
             // Log a resulting message to the console so we know that it worked.
-            console.log('Wow! ' + playerName + ' just attacked ' + enemyName + ' for a whopping ' + playerAttack + ' hit points! ' + enemyName + ' has ' + enemyHealth + ' hit points remaining.');
+            console.log(playerName + ' attacked ' + enemyName + ' for ' + damage + ' hit points. ' + enemyName + ' has ' + enemyHealth + ' hit points.');
 
             // Check Enemy Health
             if (enemyHealth <= 0) {
@@ -41,34 +47,35 @@ var fight = function (enemyName) {
                 break;
             }
             else {
-                window.alert('Wow! ' + playerName + ' just attacked ' + enemyName + ' for a whopping ' + playerAttack + ' hit points! ' + enemyName + ' has ' + enemyHealth + ' hit points remaining.');
+                window.alert(playerName + ' just attacked ' + enemyName + ' for a whopping ' + damage + ' hit points! ' + enemyName + ' has ' + enemyHealth + ' hit points remaining.');
             }
-
-            // Subtract the value of `enemyAttack` from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
-            playerHealth = playerHealth - enemyAttack;
+            // Enemy ATK DMG randomizer 
+            var damage = randomNumber(enemyAttack - 3, enemyAttack);
+            // Subtract the random value of called `damage` expression from the value of `playerHealth` and use that result to update the value in the `playerHealth` variable.
+            playerHealth = Math.max(0,playerHealth - damage);
 
             // Log a resulting message to the console so we know that it worked.
-            console.log(enemyName + ' just slammed ' + playerName + ' with an impressive ' + enemyAttack + ' hp hit! ' + playerName + ' is down to ' + playerHealth + ' hit points!');
+            console.log(enemyName + ' attacked ' + playerName + ' for ' + damage + ' hit points. ' + playerName + ' has ' + playerHealth + ' hit points.');
 
             // Check Player Health
             if (playerHealth <= 0) {
-                window.alert('Thats a huge hit by ' + enemyName + '! ' + playerName + ' is down for the count! Better luck next time. ' + enemyName + ' wins!')
+                window.alert('Thats a huge hit by ' + enemyName + '! ' + playerName + ' is down for the count! Better luck next time. ' + enemyName + ' wins!');
                 break;
             }
             else {
-                window.alert(enemyName + ' just slammed ' + playerName + ' with an impressive ' + enemyAttack + ' hp hit! ' + playerName + ' is down to ' + playerHealth + ' hit points!');
+                window.alert(enemyName + ' just slammed ' + playerName + ' with an impressive ' + damage + ' hp hit! ' + playerName + ' is down to ' + playerHealth + ' hit points!');
             }
         }
 
         // IF player chooses to skip the battle.
         else if (promptFight === 'skip' || promptFight === 'SKIP') {
             //confirm that the player wants to skip
-            var confirmSkip = window.confirm('Are you sure that you\'d like to skip this fight with ' + enemyName + '?')
+            var confirmSkip = window.confirm('Are you sure that you\'d like to skip this fight with ' + enemyName + '?');
 
             //if yes (true), skip fight
             if (confirmSkip) {
                 window.alert('It appears that ' + playerName + ' has decided to skip the fight against ' + enemyName + '!');
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney-10)
                 console.log('playerMoney', playerMoney);
                 break;
             }
@@ -76,6 +83,13 @@ var fight = function (enemyName) {
                 fight();
             }
         }
+
+        // If Player enters prompt QUIT or quit endGame function will be called. Added this for debugging purposes.
+        // else if (promptFight === 'quit' || promptFight === 'QUIT') {
+        //     endGame();
+        //     break;
+        // }
+
         else {
             window.alert('It appears that you offered an invalid entry: "' + promptFight + '" Please try again and choose a valid option: \'FIGHT\' or \'SKIP\'');
         }
@@ -94,8 +108,8 @@ var startGame = function () {
         if (playerHealth > 0) {
             window.alert('Welcome to the Robo-Gladiator Brawl! Round ' + (i + 1) + ' - FIGHT!');
             var pickedEnemyName = enemyNames[i];
-            // Reset Enemy Health to 50 at the beginning of each new round.
-            enemyHealth = 50;
+            // Assign New Enemy Health random whole number between 40 and 60 at the beginning of each new round.
+            enemyHealth = randomNumber(40,60);
             // Rotates enemyName to newly picked name
             fight(pickedEnemyName);
             // Verify enemy is not last in array
@@ -161,7 +175,7 @@ var shop = function () {
                 playerMoney = playerMoney - 7;
             }
             else {
-                window.alert('Uh oh! It appears that you are ' + (7 - playerMoney) + ' dollars short.')
+                window.alert('Uh oh! It appears that you are ' + (7 - playerMoney) + ' dollars short.');
             }
             break;
 
@@ -178,7 +192,7 @@ var shop = function () {
                 playerMoney = playerMoney - 7;
             }
             else {
-                window.alert('Uh oh! It appears that you are ' + (7 - playerMoney) + ' dollars short.')
+                window.alert('Uh oh! It appears that you are ' + (7 - playerMoney) + ' dollars short.');
             }
             break;
         
@@ -187,6 +201,10 @@ var shop = function () {
        case 'leave':
             window.alert('Thank you for visiting the shop! Good luck on your next battle!');
             break;
+
+        // case 'QUIT':
+        // case 'quit':
+        //     endGame();
 
         default:
             window.alert('It appears that you offered an invalid entry: "' + shopOptionPrompt + '" Please try again and choose a valid option: \'REFILL\', \'UPGRADE\', or \'LEAVE\'');
