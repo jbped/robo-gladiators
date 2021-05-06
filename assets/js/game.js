@@ -5,9 +5,22 @@ var randomNumber = function (min, max) {
     return value;
 };
 
+
+// Set Name Function
+var getPlayerName = function () {
+    var name = '';
+
+    while (name === null || name === '') {
+        name = prompt('What is your Robo-Gladiator\'s name?')
+    }
+
+    console.log('Your robots name is ' + name);
+    return name;
+}
+
 //character creation
 var playerInfo = {
-    name: window.prompt('What is your Robo-Gladiator\'s name?'),
+    name: getPlayerName(),
     health: 100,
     attack: 10,
     money: 10,
