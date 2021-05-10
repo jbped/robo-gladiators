@@ -73,75 +73,71 @@ var enemyInfo = [
 
 ];
 
+var fightOrSkip = function () {
+// Ask player if they would prefer to skip the fight or to continue with the fight
+    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter \'FIGHT\' or \'SKIP\' to choose.');
+        promptFight = promptFight.toLowerCase();
+    
+    // Enter the conditional recursive function call here!
+    if (promptFight === '' || promptFight === null) {
+        window.alert('It appears that you offered an invalid entry: "' + promptFight + '" Please try again and choose a valid option: \'FIGHT\' or \'SKIP\'');
+         return fightOrSkip();
+    }
+    
+    // IF player chooses to skip the battle.
+    if (promptFight === 'skip') {
+        //confirm that the player wants to skip
+        var confirmSkip = window.confirm('Are you sure that you\'d like to skip this fight?');
+        
+        //if yes (true), skip fight
+        if (confirmSkip) {
+            window.alert('It appears that ' + playerInfo.name + ' has decided to skip the fight!');
+            playerInfo.money = Math.max(0, playerInfo.money - 10);
+            console.log('playerInfo.money', playerInfo.money);
+            return true;
+        }
+    }
+}
+
 var fight = function (enemy) {
     // repeat and execute until enemy robot is defeated
     while (enemy.health > 0 && playerInfo.health > 0) {
         console.log('enemy.health', enemy.health, 'enemy.attack', enemy.attack);
         console.log('playerInfo.health', playerInfo.health, 'playerInfo.attack', playerInfo.attack, 'playerInfo.money', playerInfo.money);
-
-        var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter \'FIGHT\' or \'SKIP\' to choose.');
-
-        // IF player chooses to fight
-        if (promptFight === 'fight' || promptFight === 'FIGHT') {
-            //Player Atk Dmg Randomizer
-            var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
-            //Determine enemy.health by selecting max of zero or enemy.health-playerInfo.attack which ever is greater
-            enemy.health = Math.max(0, enemy.health - damage);
-
-            // Log a resulting message to the console so we know that it worked.
-            console.log(playerInfo.name + ' attacked ' + enemy.name + ' for ' + damage + ' hit points. ' + enemy.name + ' has ' + enemy.health + ' hit points.');
-
-            // Check Enemy Health
-            if (enemy.health <= 0) {
-                window.alert('Ooooooh! ' + enemy.name + ' was just annihilated by ' + playerInfo.name + '! ' + playerInfo.name + ' is victorious!');
-                break;
-            }
-            else {
-                window.alert(playerInfo.name + ' just attacked ' + enemy.name + ' for a whopping ' + damage + ' hit points! ' + enemy.name + ' has ' + enemy.health + ' hit points remaining.');
-            }
-            // Enemy ATK DMG randomizer 
-            var damage = randomNumber(enemy.attack - 3, enemy.attack);
-            // Subtract the random value of called `damage` expression from the value of `playerInfo.health` and use that result to update the value in the `playerInfo.health` variable.
-            playerInfo.health = Math.max(0, playerInfo.health - damage);
-
-            // Log a resulting message to the console so we know that it worked.
-            console.log(enemy.name + ' attacked ' + playerInfo.name + ' for ' + damage + ' hit points. ' + playerInfo.name + ' has ' + playerInfo.health + ' hit points.');
-
-            // Check Player Health
-            if (playerInfo.health <= 0) {
-                window.alert('Thats a huge hit by ' + enemy.name + '! ' + playerInfo.name + ' is down for the count! Better luck next time. ' + enemy.name + ' wins!');
-                break;
-            }
-            else {
-                window.alert(enemy.name + ' just slammed ' + playerInfo.name + ' with an impressive ' + damage + ' hp hit! ' + playerInfo.name + ' is down to ' + playerInfo.health + ' hit points!');
-            }
+        if (fightOrSkip()) {
+            break;
         }
+        var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+        //Determine enemy.health by selecting max of zero or enemy.health-playerInfo.attack which ever is greater
+        enemy.health = Math.max(0, enemy.health - damage);
 
-        // IF player chooses to skip the battle.
-        else if (promptFight === 'skip' || promptFight === 'SKIP') {
-            //confirm that the player wants to skip
-            var confirmSkip = window.confirm('Are you sure that you\'d like to skip this fight with ' + enemy.name + '?');
+        // Log a resulting message to the console so we know that it worked.
+        console.log(playerInfo.name + ' attacked ' + enemy.name + ' for ' + damage + ' hit points. ' + enemy.name + ' has ' + enemy.health + ' hit points.');
 
-            //if yes (true), skip fight
-            if (confirmSkip) {
-                window.alert('It appears that ' + playerInfo.name + ' has decided to skip the fight against ' + enemy.name + '!');
-                playerInfo.money = Math.max(0, playerInfo.money - 10)
-                console.log('playerInfo.money', playerInfo.money);
-                break;
-            }
-            else {
-                fight();
-            }
+        // Check Enemy Health
+        if (enemy.health <= 0) {
+            window.alert('Ooooooh! ' + enemy.name + ' was just annihilated by ' + playerInfo.name + '! ' + playerInfo.name + ' is victorious!');
+            break;
         }
-
-        // If Player enters prompt QUIT or quit endGame function will be called. Added this for debugging purposes.
-        // else if (promptFight === 'quit' || promptFight === 'QUIT') {
-        //     endGame();
-        //     break;
-        // }
-
         else {
-            window.alert('It appears that you offered an invalid entry: "' + promptFight + '" Please try again and choose a valid option: \'FIGHT\' or \'SKIP\'');
+            window.alert(playerInfo.name + ' just attacked ' + enemy.name + ' for a whopping ' + damage + ' hit points! ' + enemy.name + ' has ' + enemy.health + ' hit points remaining.');
+        }
+        // Enemy ATK DMG randomizer 
+        var damage = randomNumber(enemy.attack - 3, enemy.attack);
+        // Subtract the random value of called `damage` expression from the value of `playerInfo.health` and use that result to update the value in the `playerInfo.health` variable.
+        playerInfo.health = Math.max(0, playerInfo.health - damage);
+
+        // Log a resulting message to the console so we know that it worked.
+        console.log(enemy.name + ' attacked ' + playerInfo.name + ' for ' + damage + ' hit points. ' + playerInfo.name + ' has ' + playerInfo.health + ' hit points.');
+
+        // Check Player Health
+        if (playerInfo.health <= 0) {
+            window.alert('Thats a huge hit by ' + enemy.name + '! ' + playerInfo.name + ' is down for the count! Better luck next time. ' + enemy.name + ' wins!');
+            playerInfo.money = playerInfo.money + 10;
+            break;
+        }
+        else {
+            window.alert(enemy.name + ' just slammed ' + playerInfo.name + ' with an impressive ' + damage + ' hp hit! ' + playerInfo.name + ' is down to ' + playerInfo.health + ' hit points!');
         }
     }
 };
