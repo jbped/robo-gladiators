@@ -204,22 +204,26 @@ var shop = function () {
     var shopOptionPrompt = window.prompt(
         'Would you like to \'REFILL\' your health by 20 hit points, \'UPGRADE\' your attack, or \'LEAVE\' the store? Please enter one: \'REFILL\', \'UPGRADE\', or \'LEAVE\' to make a choice.'
     );
+    shopOptionPrompt = parseInt(shopOptionPrompt);
     switch (shopOptionPrompt) {
         // action for choosing refill option in shopOptionPrompt
-        case 'REFILL':
-        case 'refill':
+        // case 'REFILL':
+        // case 'refill':
+        case 1:
             playerInfo.refillHealth();
             break;
 
         // action for choosing damage upgrade
-        case 'UPGRADE':
-        case 'upgrade':
+        // case 'UPGRADE':
+        // case 'upgrade':
+        case 2:
             playerInfo.upgradeAttack();
             break;
 
         // action for leaving shop
-        case 'LEAVE':
-        case 'leave':
+        // case 'LEAVE':
+        // case 'leave':
+        case 3:
             window.alert('Thank you for visiting the shop! Good luck on your next battle!');
             break;
 
